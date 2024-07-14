@@ -4,8 +4,7 @@ services:
     image: haxqer/jira:9.17.0
     container_name: jira-srv
     environment:
-      - VIRTUAL_HOST=test.com
-      # - TZ="UTC+03"
+      - VIRTUAL_HOST=test.com # CHANGE THIS TO YOUR DOMAIN
 #      - JVM_MINIMUM_MEMORY=1g
 #      - JVM_MAXIMUM_MEMORY=12g
 #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
@@ -38,8 +37,7 @@ services:
     image: haxqer/confluence:8.9.4
     container_name: confluence-srv
     environment:
-      - VIRTUAL_HOST=conf.test.com
-      # - TZ="UTC+03"
+      - VIRTUAL_HOST=conf.test.com # CHANGE THIS TO YOUR DOMAIN
     #      - JVM_MINIMUM_MEMORY=1g
     #      - JVM_MAXIMUM_MEMORY=12g
     #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
@@ -52,22 +50,6 @@ services:
     restart: always
     networks:
       - network-bridge
-
-  # mysql:
-  #   image: mysql:8.0
-  #   container_name: mysql-jira
-  #   environment:
-  #     # - TZ="UTC+03"
-  #     - MYSQL_ROOT_PASSWORD=123456
-  #     - MYSQL_USER=jira
-  #     - MYSQL_PASSWORD=123123
-  #   command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--transaction-isolation=READ-COMMITTED', '--innodb_log_file_size=256M', '--max_allowed_packet=256M','--log_bin_trust_function_creators=1']
-  #   volumes:
-  #     - mysql_data:/var/lib/mysql
-  #     - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-  #   restart: always
-  #   networks:
-  #     - network-bridge
   
   postgresql:
     restart: always
@@ -76,10 +58,8 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=123456
-      # - POSTGRES_DB=jiradb
     volumes:
       - postgresql_data:/var/lib/postgresql/data
-      # - /etc/localtime:/etc/localtime:ro
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - network-bridge
@@ -119,7 +99,5 @@ networks:
 volumes:
   home_data:
     external: false
-  # mysql_data:
-  #   external: false
   postgresql_data:
     external: false
