@@ -53,7 +53,7 @@ services:
   
   postgresql:
     restart: always
-    image: postgres:11
+    image: postgres:15
     container_name: psql-jira
     environment:
       - POSTGRES_USER=root
