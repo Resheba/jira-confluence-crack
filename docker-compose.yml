@@ -2,6 +2,7 @@ version: '3.4'
 services:
   jira:
     image: haxqer/jira:9.17.0
+    user: root
     container_name: jira-srv
     environment:
       - VIRTUAL_HOST=test.com # CHANGE THIS TO YOUR DOMAIN
@@ -35,6 +36,7 @@ services:
 
   confluence:
     image: haxqer/confluence:8.9.4
+    user: root
     container_name: confluence-srv
     environment:
       - VIRTUAL_HOST=conf.test.com # CHANGE THIS TO YOUR DOMAIN
