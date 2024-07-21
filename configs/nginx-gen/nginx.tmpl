@@ -78,6 +78,10 @@ server {
 	{{ if $enable_ipv6 }}
 	listen [::]:80;
 	{{ end }}
+	location /.well-known/acme-challenge/ {
+                root /usr/share/nginx/html;
+        }
+
 	access_log /var/log/nginx/access.log vhost;
 	return 503;
 }
@@ -166,6 +170,10 @@ server {
 	{{ if $enable_ipv6 }}
 	listen [::]:80 {{ $default_server }};
 	{{ end }}
+	location /.well-known/acme-challenge/ {
+                root /usr/share/nginx/html;
+        }
+
 	access_log /var/log/nginx/access.log vhost;
 	return 301 https://$host$request_uri;
 }
@@ -240,6 +248,11 @@ server {
 	{{ else if (exists "/etc/nginx/vhost.d/default") }}
 	include /etc/nginx/vhost.d/default;
 	{{ end }}
+
+	location /.well-known/acme-challenge/ {
+                root /usr/share/nginx/html;
+        }
+
 
 	location / {
 		{{ if eq $proto "uwsgi" }}
