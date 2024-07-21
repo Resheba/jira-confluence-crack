@@ -6,9 +6,7 @@ services:
     container_name: jira-srv
     environment:
       - VIRTUAL_HOST=test.com # CHANGE THIS TO YOUR DOMAIN
-#      - JVM_MINIMUM_MEMORY=1g
-#      - JVM_MAXIMUM_MEMORY=12g
-#      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
+#      - LETSENCRYPT_HOST=test.com # CHANGE THIS TO YOUR DOMAIN
     depends_on:
       - postgresql
     # ports:
@@ -19,20 +17,20 @@ services:
     networks:
       - network-bridge
       
-  # nginx-letsencrypt:
-  #   container_name: nginx-letsencrypt
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   restart: always
-  #   environment:
-  #     NGINX_PROXY_CONTAINER: nginx-proxy
-  #     NGINX_DOCKER_GEN_CONTAINER: nginx-gen
-  #   volumes_from:
-  #     - nginx-proxy
-  #   volumes:
-  #     - ./configs/nginx/certs:/etc/nginx/certs:rw
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   networks:
-  #     - network-bridge
+  nginx-letsencrypt:
+    container_name: nginx-letsencrypt
+    image: nginxproxy/acme-companion
+    restart: always
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+      NGINX_DOCKER_GEN_CONTAINER: nginx-gen
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - ./configs/nginx/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - network-bridge
 
   confluence:
     image: haxqer/confluence:8.9.4
@@ -40,9 +38,7 @@ services:
     container_name: confluence-srv
     environment:
       - VIRTUAL_HOST=conf.test.com # CHANGE THIS TO YOUR DOMAIN
-    #      - JVM_MINIMUM_MEMORY=1g
-    #      - JVM_MAXIMUM_MEMORY=12g
-    #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
+#      - LETSENCRYPT_HOST=conf.test.com # CHANGE THIS TO YOUR DOMAIN
     depends_on:
       - postgresql
     # ports:
